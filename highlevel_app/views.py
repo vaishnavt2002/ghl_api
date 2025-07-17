@@ -44,7 +44,6 @@ def callback(request):
     response = requests.post(token_url, data=payload, headers=headers)
 
     if response.status_code != 200:
-        print("Token Error:", response.status_code, response.text)
         return render(request, 'error.html', {'message': f'Failed to obtain access token: {response.text}'})
 
     token_data = response.json()
@@ -113,11 +112,9 @@ def update_contact(request):
         headers['Authorization'] = f'Bearer {access_token}'
         response = requests.get(contacts_url, headers=headers, params=params)
     if response.status_code == 401:
-        print("Contacts Error:", response.status_code, response.text)
         return render(request, 'error.html', {'message': f'Failed to fetch contacts: {response.text}', 'show_login': True})
 
     if response.status_code != 200:
-        print("Contacts Error:", response.status_code, response.text)
         return render(request, 'error.html', {'message': f'Failed to fetch contacts: {response.text}', 'show_dashboard': True})
     
     
@@ -148,8 +145,7 @@ def update_contact(request):
     if not custom_field_id:
         return render(request, 'error.html', {'message': 'Custom field "DFS Booking Zoom Link" not found', 'show_dashboard': True})
     
-    print(contact_email)
-    print(contact_id)
+   
 
     #Updating the contact's custom field
     update_contact_url = f"https://services.leadconnectorhq.com/contacts/{contact_id}"
